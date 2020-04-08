@@ -11,8 +11,8 @@ public class FindWinner {
 	//this is algorithm #1 (4.1)
 	//returns the value of a board
 	public static void main(String[] args) {
-		int[] chains = {4,4};
-		int[] loops = {4};
+		int[] chains = {3};
+		int[] loops = {0};
 		
 		int gameVal = getValue(chains, loops);
 		int cv = getCV(chains,loops);

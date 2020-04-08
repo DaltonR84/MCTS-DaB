@@ -5,7 +5,14 @@ public class LoonyEndgame {
 	public static void main(String[] args) {
 		//variables about board taken in
 		int size = 5;
-		String binStr = "110111011010000011110100011111000001111011001110100001111111";
+		//String binStr = "111100001111";
+		//String binStr = "110101100010111100101001";
+		//String binStr = "111111111111111111111111";
+		//String binStr = "0111110110001110100110110110000010101111";
+		String binStr = "111111101011000001011001101110100000111111010000011011101100";
+		
+		long start = System.currentTimeMillis();
+		
 		int[][] result = getChainsLoops(binStr, size);
 		
 		//--------------------------------------------------------------------------------------
@@ -15,11 +22,23 @@ public class LoonyEndgame {
 		}
 		for(int cnt = 0; cnt < result[1].length; cnt++) {
 			System.out.println("Loop: " + result[1][cnt]);
-		}	
+		}
 		
 		
-		System.out.println("Game Value: " + FindWinner.getValue(result[0],result[1]));
 		
+		int[] zero = {0};
+		if(result[0].length == 0 && result[1].length == 0) {
+			System.out.println(0);
+		} else if(result[1].length == 0) {
+			System.out.println("Game Value: " + FindWinner.getValue(result[0],zero));
+		} else if(result[0].length == 0) {
+			System.out.println("Game Value: " + FindWinner.getValue(zero,result[1]));
+		} else {
+			System.out.println("Game Value: " + FindWinner.getValue(result[0],result[1]));
+		}
+		
+		long end = System.currentTimeMillis();
+		System.out.println("time in millis: " + (end - start));
 	}
 	
 	
@@ -125,7 +144,6 @@ public class LoonyEndgame {
 					length++;
 					//System.out.println("Loop: " + loop[cnt]);
 				}
-	
 				loops[posInArr] = length;
 				posInArr++;
 				loopNum++;
@@ -167,7 +185,7 @@ public class LoonyEndgame {
 		//returns the chains and the loops
 		return result;
 	}
-	
+
 	
 	// take an array of int that represent the edges of the boxes
 	// Parameter @ boxEdges is the array of edges for each box [boxNumber][sideNumber]
@@ -208,19 +226,27 @@ public class LoonyEndgame {
 	}
 	
 	
-	//returns true if all sides have at least two edges taken
+	//returns true if all boxes have at least two edges taken
 	//Parameters @ boxStates is the box states retrieved from getBoxStates() and size is size of board
 	public static boolean twoSides(long[] boxStates, int size) {
+		
+		boolean complete = true;
 		
 		//go through all box states
 		for(int box = 0; box < boxStates.length; box++) {
 			
-			if(Long.bitCount(boxStates[box]) < 2) { //return false if a box has less than 2 edges taken
+			if(Long.bitCount(boxStates[box]) < 2 || Long.bitCount(boxStates[box]) == 3) { //return false if a box has less than 2 edges taken
 				return false;
 			}	
+			if(Long.bitCount(boxStates[box]) != 4) {
+				complete = false;
+			}
 		}
 		//returns true if all boxes have at least 2 edges taken
-		return true;
+		
+		if(complete == false)
+			return true;
+		return false;
 	}
 	
 	
@@ -495,5 +521,6 @@ public class LoonyEndgame {
 		
 		return -1;
 	}
+
 
 }
